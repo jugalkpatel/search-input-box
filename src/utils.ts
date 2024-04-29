@@ -1,7 +1,27 @@
-import { User } from "./types/common";
+import { AddressType, Item, User } from "./types/common";
 import { faker } from "@faker-js/faker";
 
-export const data: User[] = Array(5)
+export function checkPresentInItems(items: Item[], queryValue: string) {
+  if (!queryValue) {
+    return false;
+  }
+
+  return items.some((item) =>
+    item.name.toLowerCase().includes(queryValue.toLowerCase())
+  );
+}
+
+export function combineAddress(args: AddressType): string {
+  const { streetAddress, city, state, country } = args;
+  const addressLines = [streetAddress, city, country];
+  if (state) {
+    addressLines.push(`${state}`);
+  }
+
+  return addressLines.join(", ");
+}
+
+export const data: User[] = Array(100)
   .fill(1)
   .map(() => {
     return {
