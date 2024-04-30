@@ -13,7 +13,7 @@ function useCheckSearchQueryPresentInUserData(data: User[]) {
 }
 
 export function SearchInputItems({ data }: { data: User[] }) {
-  const { dispatch } = useSearchInput();
+  const { dispatch, setHoverEnabled } = useSearchInput();
   const isQueryPresentInUserData = useCheckSearchQueryPresentInUserData(data);
   const arrowUpPressed = useKeyPress("ArrowUp");
   const arrowDownPressed = useKeyPress("ArrowDown");
@@ -34,6 +34,7 @@ export function SearchInputItems({ data }: { data: User[] }) {
     <div
       className="border border-gray-300 h-96 shadow-sm rounded-md absolute inset-0 top-16 overflow-auto"
       onMouseEnter={() => console.log("mouse hovered")}
+      onMouseMove={() => setHoverEnabled(true)}
     >
       {isQueryPresentInUserData ? (
         <>
