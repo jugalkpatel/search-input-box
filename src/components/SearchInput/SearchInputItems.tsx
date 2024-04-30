@@ -33,7 +33,6 @@ export function SearchInputItems({ data }: { data: User[] }) {
   return (
     <div
       className="border border-gray-300 h-96 shadow-sm rounded-md absolute inset-0 top-16 overflow-auto"
-      onMouseEnter={() => console.log("mouse hovered")}
       onMouseMove={() => setHoverEnabled(true)}
     >
       {isQueryPresentInUserData ? (
