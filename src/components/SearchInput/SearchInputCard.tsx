@@ -62,8 +62,8 @@ function Name({ name }: { name: string }) {
 
 export function SearchInputCard(props: User & { index: number }) {
   const ref = useRef<HTMLDivElement>(null);
-  const { searchQuery } = useSearchInput();
-  const { selectedIndex } = useSearchInput();
+  const { searchQuery, selectedIndex, isHoverEnabled, setSelectedIndex } =
+    useSearchInput();
   const { id, name, address, items, pincode, index } = props;
   const isPresentInItems = checkPresentInItems(items, searchQuery);
 
@@ -76,16 +76,15 @@ export function SearchInputCard(props: User & { index: number }) {
         block: "center",
         inline: "center",
       });
+      // setHoverEnabled(false);
     }
   }, [index, selectedIndex]);
 
-  //   const handleClick = (index: number) => {
-  // const throttled = throttle(
-  //   (index: number) => setSelectedIndex(index),
-  //   1000
-  // );
-  // throttled(index);
-  //   };
+  const handleClick = (index: number) => {
+    if (isHoverEnabled) {
+      setSelectedIndex(index);
+    }
+  };
 
   return (
     <div
@@ -96,7 +95,7 @@ export function SearchInputCard(props: User & { index: number }) {
           "bg-gray-100": index === selectedIndex,
         }
       )}
-      // onMouseEnter={() => handleClick(index)}
+      onMouseEnter={() => handleClick(index)}
     >
       <p className="font-semibold">{id}</p>
       <Name name={name} />

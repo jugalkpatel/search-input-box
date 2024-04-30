@@ -1,7 +1,7 @@
 import { User } from "../../types/common";
 import { SearchInputContext } from "./search-input.context";
 import { actions } from "../../constants";
-import { useReducer } from "react";
+import { useCallback, useReducer, useState } from "react";
 import { data } from "../../utils";
 
 const initialState: {
@@ -61,6 +61,7 @@ export default function SearchInputProvider({
   children: React.ReactNode;
 }) {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const [isHoverEnabled, setHoverEnabled] = useState(true);
   console.log({ state });
 
   const setSelectedIndex = (index: number) => {
@@ -71,9 +72,20 @@ export default function SearchInputProvider({
     dispatch({ type: actions.SET_QUERY, payload: query });
   };
 
+  const handleHover = useCallback((value: boolean) => {
+    setHoverEnabled(value);
+  }, []);
+
   return (
     <SearchInputContext.Provider
-      value={{ ...state, dispatch, setSelectedIndex, setSearchQuery }}
+      value={{
+        ...state,
+        dispatch,
+        setSelectedIndex,
+        setSearchQuery,
+        isHoverEnabled,
+        setHoverEnabled: handleHover,
+      }}
     >
       {children}
     </SearchInputContext.Provider>

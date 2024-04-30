@@ -9,6 +9,8 @@ export type SearchContextType = {
   setSearchQuery: (text: string) => void;
   data: User[];
   dispatch: React.Dispatch<ACTIONTYPE>;
+  isHoverEnabled: boolean;
+  setHoverEnabled: (value: boolean) => void;
 };
 
 export const SearchInputContext = createContext<SearchContextType | undefined>(
