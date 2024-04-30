@@ -4,6 +4,7 @@ export const actions = {
   SET_DATA: "SET_DATA",
   ARROW_UP: "ARROW_UP",
   ARROW_DOWN: "ARROW_DOWN",
+  SET_HOVER: "SET_HOVER",
 } as const;
 
 export const keyCodes = {

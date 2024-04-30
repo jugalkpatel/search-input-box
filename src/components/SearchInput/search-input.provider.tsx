@@ -1,16 +1,18 @@
 import { User } from "../../types/common";
 import { SearchInputContext } from "./search-input.context";
 import { actions } from "../../constants";
-import { useCallback, useReducer, useState } from "react";
+import { useCallback, useReducer } from "react";
 import { data } from "../../utils";
 
 const initialState: {
   selectedIndex: number;
   searchQuery: string;
   data: User[];
-} = { selectedIndex: 0, searchQuery: "", data };
+  isHoverEnabled: boolean;
+} = { selectedIndex: 0, searchQuery: "", data, isHoverEnabled: true };
 
 export type ACTIONTYPE =
+  | { type: typeof actions.SET_HOVER; payload: boolean }
   | { type: typeof actions.SET_INDEX; payload: number }
   | { type: typeof actions.SET_QUERY; payload: string }
   | { type: typeof actions.SET_DATA; payload: User[] }
@@ -19,6 +21,11 @@ export type ACTIONTYPE =
 
 function reducer(state: typeof initialState, action: ACTIONTYPE) {
   switch (action.type) {
+    case actions.SET_HOVER:
+      return {
+        ...state,
+        isHoverEnabled: action.payload,
+      };
     case actions.SET_INDEX:
       return {
         ...state,
@@ -32,6 +39,7 @@ function reducer(state: typeof initialState, action: ACTIONTYPE) {
     case actions.ARROW_UP:
       return {
         ...state,
+        isHoverEnabled: false,
         selectedIndex:
           state.selectedIndex !== 0
             ? state.selectedIndex - 1
@@ -40,6 +48,7 @@ function reducer(state: typeof initialState, action: ACTIONTYPE) {
     case actions.ARROW_DOWN:
       return {
         ...state,
+        isHoverEnabled: false,
         selectedIndex:
           state.selectedIndex !== state.data.length - 1
             ? state.selectedIndex + 1
@@ -61,8 +70,6 @@ export default function SearchInputProvider({
   children: React.ReactNode;
 }) {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const [isHoverEnabled, setHoverEnabled] = useState(true);
-  console.log({ state });
 
   const setSelectedIndex = (index: number) => {
     dispatch({ type: actions.SET_INDEX, payload: index });
@@ -73,7 +80,7 @@ export default function SearchInputProvider({
   };
 
   const handleHover = useCallback((value: boolean) => {
-    setHoverEnabled(value);
+    dispatch({ type: actions.SET_HOVER, payload: value });
   }, []);
 
   return (
@@ -83,7 +90,6 @@ export default function SearchInputProvider({
         dispatch,
         setSelectedIndex,
         setSearchQuery,
-        isHoverEnabled,
         setHoverEnabled: handleHover,
       }}
     >
